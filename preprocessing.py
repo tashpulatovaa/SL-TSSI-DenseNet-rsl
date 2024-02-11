@@ -19,7 +19,14 @@ SLICE_DICT = {
     'root': slice(468+21+33+21, 468+21+33+21+1)
 }
 
+# IN DATASET.PY
 
+"""
+    Ensures the number of frames in the input image is at least a specified number.
+    
+    Input: Images tensor with shape (batch_size, height, width, channels).
+    Output: Padded images tensor with shape (batch_size, padded_height, width, channels).
+"""
 class PadIfLessThan(tf.keras.layers.Layer):
     def __init__(self, frames=128, **kwargs):
         super().__init__(**kwargs)
@@ -33,7 +40,14 @@ class PadIfLessThan(tf.keras.layers.Layer):
         padded_images = tf.pad(images, paddings, "CONSTANT")
         return padded_images
 
+#IN DATASET.PY
 
+"""
+    Resizes images to a specified height if their current height exceeds it.
+    
+    Input: Images tensor with shape (batch_size, height, width, channels).
+    Output: Resized images tensor with shape (batch_size, resized_height, width, channels).
+"""
 class ResizeIfMoreThan(tf.keras.layers.Layer):
     def __init__(self, frames=128, **kwargs):
         super().__init__(**kwargs)
@@ -49,6 +63,14 @@ class ResizeIfMoreThan(tf.keras.layers.Layer):
                           lambda: images)
         return resized
 
+#IN DATASET.PY
+    
+"""
+    Centers the image data around a specified joint's coordinates.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Centered images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 
 class Center(tf.keras.layers.Layer):
     def __init__(self, around_index=0, **kwargs):
@@ -73,6 +95,14 @@ class Center(tf.keras.layers.Layer):
 
         return tf.stack([new_red, new_green, blue], axis=-1)
 
+#IN DATASET.PY
+    
+"""
+    Centers the image data around a specified joint's coordinates at the first frame.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Centered images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 
 class CenterAtFirstFrame2D(tf.keras.layers.Layer):
     def __init__(self, around_index=0, **kwargs):
@@ -101,7 +131,14 @@ class CenterAtFirstFrame2D(tf.keras.layers.Layer):
 
         return tf.stack([new_red, new_green], axis=-1)
 
-
+#IN DATASET.PY
+    
+"""
+    Normalizes image data either frame-wise or joint-wise to be translation and scale invariant.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Normalized images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 class TranslationScaleInvariant(tf.keras.layers.Layer):
     def __init__(self, level='frame', **kwargs):
         super().__init__(**kwargs)
@@ -193,7 +230,14 @@ class TranslationScaleInvariant(tf.keras.layers.Layer):
             lambda: self.joint_level(batch))
         return batch
 
-
+# IN DATASET.PY
+    
+"""
+    Converts x, y coordinates into angles and scales them to a specified range, filling blue channel.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Processed images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 class FillBlueWithAngle(tf.keras.layers.Layer):
     def __init__(self, x_channel=0, y_channel=1, scale_to=[0, 1], **kwargs):
         super().__init__(**kwargs)
@@ -215,6 +259,12 @@ class FillBlueWithAngle(tf.keras.layers.Layer):
         return tf.stack([x, y, scaled], axis=-1)
 
 
+"""
+    Fills the z-coordinate with zeros.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Processed images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 class FillZWithZeros(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -226,6 +276,12 @@ class FillZWithZeros(tf.keras.layers.Layer):
         return tf.stack([x, y, zeros], axis=-1)
 
 
+"""
+    Removes the z-coordinate from the image data.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Processed images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 class RemoveZ(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -235,7 +291,12 @@ class RemoveZ(tf.keras.layers.Layer):
         x, y, _ = tf.unstack(batch, axis=-1)
         return tf.stack([x, y], axis=-1)
 
-
+"""
+    Adds a root joint between left and right shoulder joints.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Processed images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 class AddRoot(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -251,7 +312,12 @@ class AddRoot(tf.keras.layers.Layer):
         batch = tf.concat([batch, root], axis=2)
         return batch
 
-
+"""
+    Sorts the joints/columns based on the provided order.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Processed images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 class SortColumns(tf.keras.layers.Layer):
     def __init__(self, tssi_order, **kwargs):
         super().__init__(**kwargs)
@@ -271,6 +337,12 @@ class SortColumns(tf.keras.layers.Layer):
         keypoints = tf.gather(keypoints, indices=self.joints_idxs, axis=2)
         return keypoints
 
+"""
+    Fills NaN values in the image data with appropriate values.
+    
+    Input: Batch of images tensor with shape (batch_size, frames, joints, coordinates).
+    Output: Processed images tensor with shape (batch_size, frames, joints, coordinates).
+"""
 
 class FillNaNValues(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
@@ -310,7 +382,12 @@ class FillNaNValues(tf.keras.layers.Layer):
 
         return keypoints
 
-
+"""
+    Converts the input tensor into a single-item batch.
+    
+    Input: Images tensor with shape (frames, joints, coordinates).
+    Output: Batch of images tensor with shape (1, frames, joints, coordinates).
+"""
 class OneItemBatch(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -320,7 +397,12 @@ class OneItemBatch(tf.keras.layers.Layer):
         keypoints = tf.expand_dims(keypoints, 0)
         return keypoints
 
-
+"""
+    Converts the single-item batch tensor into a single tensor.
+    
+    Input: Batch of images tensor with shape (1, frames, joints, coordinates).
+    Output: Images tensor with shape (frames, joints, coordinates).
+"""
 class OneItemUnbatch(tf.keras.layers.Layer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -2,7 +2,7 @@ from enum import IntEnum
 import tensorflow as tf
 from config import AUTSL_INPUT_HEIGHT, MEJIAPEREZ_INPUT_HEIGHT, WLASL100_INPUT_HEIGHT
 from data_augmentation import RandomFlip, RandomScale, RandomShift, RandomRotation, RandomSpeed
-from preprocessing import Center, CenterAtFirstFrame2D, FillBlueWithAngle, PadIfLessThan, RemoveZ, ResizeIfMoreThan, TranslationScaleInvariant
+from preprocessing import Center, CenterAtFirstFrame2D, FillBlueWithAngle, PadIfLessThan, ResizeIfMoreThan, TranslationScaleInvariant
 import tensorflow_datasets as tfds
 
 
@@ -199,6 +199,8 @@ class Dataset():
             one_hot_label = tf.one_hot(item["label"],
                                        info.features['label'].num_classes)
             return item["pose"], one_hot_label
+        
+        
         ds["train"] = ds["train"].map(label_to_one_hot).cache()
         ds["validation"] = ds["validation"].map(label_to_one_hot)
 
@@ -217,6 +219,8 @@ class Dataset():
         elif name == "mejiaperez_tssi":
             input_height = MEJIAPEREZ_INPUT_HEIGHT
         elif name == "wlasl100_tssi":
+            input_height = WLASL100_INPUT_HEIGHT
+        elif name == "slovo_tssi":
             input_height = WLASL100_INPUT_HEIGHT
         else:
             raise Exception("Dataset " + name + " not found.")

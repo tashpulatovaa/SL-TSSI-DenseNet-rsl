@@ -8,6 +8,7 @@ import tensorflow as tf
 from model import build_densenet121_model
 from optimizer import build_sgd_optimizer
 from utils import str2bool
+from datasets import wlasl100_tssi
 
 dataset = None
 
