@@ -9,6 +9,7 @@ from model import build_densenet121_model
 from optimizer import build_sgd_optimizer
 from utils import str2bool
 from datasets import slovo_tssi
+import os
 
 dataset = None
 
@@ -79,7 +80,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
         wandb_callback = WandbCallback(
             monitor="val_top_1",
             mode="max",
-            save_model=False
+            save_model=True
         )
         callbacks.append(wandb_callback)
         
@@ -98,6 +99,16 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
               verbose=verbose,
               validation_data=validation_dataset,
               callbacks=callbacks)
+    
+        # After training completes, save the model
+    if config['save_weights']:
+        # Specify the path where you want to save the model
+        model_save_path = os.path.join("artifacts", wandb.run.id, "final_model")
+        os.makedirs(model_save_path, exist_ok=True)  # Ensure the directory exists
+        model_save_file = os.path.join(model_save_path, "model.h5")  # Name of the model file
+
+        print(f"Saving the model to {model_save_file}")
+        model.save(model_save_file) 
 
     # get the logs of the model
     return model.history
@@ -152,7 +163,7 @@ if __name__ == "__main__":
     parser.add_argument('--project', type=str,
                         help='Project name', default='densenet-rsl')
     parser.add_argument('--dataset', type=str,
-                        help='Name of dataset', default='wlasl100_tssi')
+                        help='Name of dataset', default='slovo_tssi')
     parser.add_argument('--concat_validation_to_train', type=str2bool,
                         help='Add validation set to training set', default=False)
     parser.add_argument('--save_weights', type=str2bool,

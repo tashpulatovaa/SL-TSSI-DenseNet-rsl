@@ -61,7 +61,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
         wandb_callback = WandbCallback(
             monitor="val_top_1",
             mode="max",
-            save_model=False
+            save_model=True
         )
         callbacks.append(wandb_callback)
 
@@ -69,6 +69,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
     scores = model.evaluate(testing_dataset, return_dict=True)
 
     # get the logs of the evaluation
+    print(f'Result: {scores}')
     return scores
 
 
@@ -97,11 +98,11 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Training')
     parser.add_argument('--entity', type=str,
-                        help='Entity', default='davidlainesv')
+                        help='Entity', default='aikokul')
     parser.add_argument('--project', type=str,
-                        help='Project name', default='testing')
+                        help='Project name', default='densenet-testing')
     parser.add_argument('--dataset', type=str,
-                        help='Name of dataset', default='wlasl100_tssi')
+                        help='Name of dataset', default='slovo_tssi')
     parser.add_argument('--weights_dir', type=str,
                         help='Dir to weights', required=True)
 
