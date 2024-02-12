@@ -4,6 +4,7 @@ from config import AUTSL_INPUT_HEIGHT, MEJIAPEREZ_INPUT_HEIGHT, WLASL100_INPUT_H
 from data_augmentation import RandomFlip, RandomScale, RandomShift, RandomRotation, RandomSpeed
 from preprocessing import Center, CenterAtFirstFrame2D, FillBlueWithAngle, PadIfLessThan, ResizeIfMoreThan, TranslationScaleInvariant
 import tensorflow_datasets as tfds
+from datasets import slovo_tssi
 
 
 class LayerType(IntEnum):

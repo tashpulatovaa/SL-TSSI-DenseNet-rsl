@@ -8,7 +8,7 @@ import tensorflow as tf
 from model import build_densenet121_model
 from optimizer import build_sgd_optimizer
 from utils import str2bool
-from datasets import wlasl100_tssi
+from datasets import slovo_tssi
 
 dataset = None
 
@@ -148,9 +148,9 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Training')
     parser.add_argument('--entity', type=str,
-                        help='Entity', default='davidlainesv')
+                        help='Entity', default='aikokul')
     parser.add_argument('--project', type=str,
-                        help='Project name', default='training')
+                        help='Project name', default='densenet-rsl')
     parser.add_argument('--dataset', type=str,
                         help='Name of dataset', default='wlasl100_tssi')
     parser.add_argument('--concat_validation_to_train', type=str2bool,
