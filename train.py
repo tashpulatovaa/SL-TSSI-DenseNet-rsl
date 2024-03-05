@@ -8,7 +8,6 @@ import tensorflow as tf
 from model import build_densenet121_model
 from optimizer import build_sgd_optimizer
 from utils import str2bool
-from datasets import slovo_tssi
 import os
 
 dataset = None
@@ -86,7 +85,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
         
         if config['save_weights']:
             wandb_model_checkpoint = WandbModelCheckpoint(
-                f"artifacts/{wandb.run.id}/weights",
+                f"/artifacts/{wandb.run.id}/weights",
                 save_weights_only=True,
                 save_freq=config['save_freq'],
                 verbose=1
@@ -99,16 +98,6 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
               verbose=verbose,
               validation_data=validation_dataset,
               callbacks=callbacks)
-    
-        # After training completes, save the model
-    if config['save_weights']:
-        # Specify the path where you want to save the model
-        model_save_path = os.path.join("artifacts", wandb.run.id, "final_model")
-        os.makedirs(model_save_path, exist_ok=True)  # Ensure the directory exists
-        model_save_file = os.path.join(model_save_path, "model.h5")  # Name of the model file
-
-        print(f"Saving the model to {model_save_file}")
-        model.save(model_save_file) 
 
     # get the logs of the model
     return model.history
@@ -177,7 +166,7 @@ if __name__ == "__main__":
     parser.add_argument('--lr_min', type=float,
                         help='Minimum learning rate', default=0.001)
     parser.add_argument('--lr_max', type=float,
-                        help='Minimum learning rate', default=0.01)
+                        help='Maximum learning rate', default=0.01)
     parser.add_argument('--weight_decay', type=float,
                         help='Weight decay', default=0)
     

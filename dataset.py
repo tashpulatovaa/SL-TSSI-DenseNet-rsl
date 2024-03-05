@@ -4,7 +4,6 @@ from config import AUTSL_INPUT_HEIGHT, MEJIAPEREZ_INPUT_HEIGHT, WLASL100_INPUT_H
 from data_augmentation import RandomFlip, RandomScale, RandomShift, RandomRotation, RandomSpeed
 from preprocessing import Center, CenterAtFirstFrame2D, FillBlueWithAngle, PadIfLessThan, ResizeIfMoreThan, TranslationScaleInvariant
 import tensorflow_datasets as tfds
-from datasets import slovo_tssi
 
 
 class LayerType(IntEnum):
@@ -179,7 +178,7 @@ class Dataset():
         global LayerDict
 
         # obtain dataset
-        ds, info = tfds.load(name, data_dir="datasets", with_info=True)
+        ds, info = tfds.load(name, data_dir="/home/aikokul/Desktop/SPROJ/dataset/slovo_tssi-20240212T101240Z-001/slovo_tssi/1.0.0", with_info=True)
 
         # generate train dataset
         if concat_validation_to_train:

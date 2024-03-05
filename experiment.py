@@ -5,7 +5,7 @@ import numpy as np
 import wandb
 from wandb.keras import WandbCallback, WandbModelCheckpoint
 import tensorflow as tf
-from model import build_densenet121_model, build_efficientnet_model
+from model import build_densenet121_model#, build_efficientnet_model
 from optimizer import build_sgd_optimizer, build_adam_optimizer, build_sgd_optimizer_wo_schedule
 from utils import str2bool
 
@@ -57,7 +57,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
     print("[INFO] Dataset Number of classes:", dataset.num_classes)
 
     # describe input shape
-    input_shape = [60, dataset.input_width, 2]
+    input_shape = [dataset.input_height, dataset.input_width, 3]
     print("[INFO] Input Shape:", input_shape)
 
     # setup optimizer
@@ -154,6 +154,8 @@ def main(args):
         dataset = Dataset()
     elif args.dataset == "popsign":
         dataset = Dataset()
+    elif args.dataset == "slovo_tssi":
+        dataset = Dataset(name="slovo_tssi")
     else:
         raise Exception("Dataset unknown")
 
@@ -167,10 +169,10 @@ def main(args):
         'backbone': args.backbone,
         'pretraining': args.pretraining,
         'dropout': args.dropout,
-        'growth_rate': args.growth_rate,
-        'use_attention': args.use_attention,
+        #'growth_rate': args.growth_rate,
+        #'use_attention': args.use_attention,
         'use_loss': args.use_loss,
-        'densenet_depth': args.densenet_depth,
+        #'densenet_depth': args.densenet_depth,
 
         'optimizer': args.optimizer,
         'initial_learning_rate': args.lr_min,
@@ -196,7 +198,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Validation')
     parser.add_argument('--entity', type=str,
-                        help='Entity', default='davidlainesv')
+                        help='Entity', default='aikokul')
     parser.add_argument('--project', type=str,
                         help='Project name')
     parser.add_argument('--mode', type=str,
@@ -204,7 +206,7 @@ if __name__ == "__main__":
                         default='validation')
     parser.add_argument('--dataset', type=str,
                         help='Name of the dataset: \'wlasl100\', \'autsl\' and \'popsign\'',
-                        default='wlasl100')
+                        default='slovo_tssi')
 
     parser.add_argument('--backbone', type=str,
                         help='Backbone method: \'densenet\', \'mobilenet\'',
