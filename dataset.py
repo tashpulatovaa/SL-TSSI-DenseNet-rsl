@@ -1,6 +1,6 @@
 from enum import IntEnum
 import tensorflow as tf
-from config import AUTSL_INPUT_HEIGHT, MEJIAPEREZ_INPUT_HEIGHT, WLASL100_INPUT_HEIGHT
+from config import AUTSL_INPUT_HEIGHT, MEJIAPEREZ_INPUT_HEIGHT, WLASL100_INPUT_HEIGHT, SLOVO_TSSI_INPUT_HEIGH
 from data_augmentation import RandomFlip, RandomScale, RandomShift, RandomRotation, RandomSpeed
 from preprocessing import Center, CenterAtFirstFrame2D, FillBlueWithAngle, PadIfLessThan, ResizeIfMoreThan, TranslationScaleInvariant
 import tensorflow_datasets as tfds
@@ -15,7 +15,7 @@ class LayerType(IntEnum):
 LayerDict = {
     'random_speed': {
         'type': LayerType.Augmentation,
-        'layer': RandomSpeed(min_frames=40, max_frames=128, seed=5),
+        'layer': RandomSpeed(min_frames=30, max_frames=128, seed=5),
     },
     'random_rotation': {
         'type': LayerType.Augmentation,
@@ -221,7 +221,7 @@ class Dataset():
         elif name == "wlasl100_tssi":
             input_height = WLASL100_INPUT_HEIGHT
         elif name == "slovo_tssi":
-            input_height = WLASL100_INPUT_HEIGHT
+            input_height = SLOVO_TSSI_INPUT_HEIGH
         else:
             raise Exception("Dataset " + name + " not found.")
             

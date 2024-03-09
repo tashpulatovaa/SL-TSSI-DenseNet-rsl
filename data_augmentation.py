@@ -3,7 +3,7 @@ import tensorflow as tf
 
 
 class RandomSpeed(tf.keras.layers.Layer):
-    def __init__(self, min_frames=96, max_frames=128, seed=None, debug=False, **kwargs):
+    def __init__(self, min_frames=50, max_frames=128, seed=None, debug=False, **kwargs):
         super().__init__(**kwargs)
         self.min_frames = min_frames
         self.max_frames = max_frames
