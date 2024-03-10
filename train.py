@@ -148,7 +148,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Training')
     parser.add_argument('--entity', type=str,
-                        help='Entity', default='aikokul')
+                        help='Entity', default='tashpulatova_a')
     parser.add_argument('--project', type=str,
                         help='Project name', default='densenet-rsl')
     parser.add_argument('--dataset', type=str,

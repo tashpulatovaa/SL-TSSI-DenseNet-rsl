@@ -178,7 +178,7 @@ class Dataset():
         global LayerDict
 
         # obtain dataset
-        ds, info = tfds.load(name, data_dir="/home/aikokul/Desktop/SPROJ/dataset/slovo_tssi-20240212T101240Z-001/slovo_tssi/1.0.0", with_info=True)
+        ds, info = tfds.load(name, data_dir="dataset/path", with_info=True)
 
         # generate train dataset
         if concat_validation_to_train:
