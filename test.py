@@ -98,7 +98,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Training')
     parser.add_argument('--entity', type=str,
-                        help='Entity', default='aikokul')
+                        help='Entity', default='tashpulatova_a')
     parser.add_argument('--project', type=str,
                         help='Project name', default='densenet-testing')
     parser.add_argument('--dataset', type=str,
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                         help='Dir to weights', required=True)
 
     parser.add_argument('--batch_size', type=int,
-                        help='Batch size of training and testing', default=64)
+                        help='Batch size of training and testing', default=32)
     parser.add_argument('--pipeline', type=str,
                         help='Pipeline', default="default")
 
