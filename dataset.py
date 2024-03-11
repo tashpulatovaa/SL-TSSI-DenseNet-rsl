@@ -108,7 +108,7 @@ PipelineDict = {
 
 def generate_train_dataset(dataset,
                            train_map_fn,
-                           repeat=False,
+                           repeat=True,
                            batch_size=32,
                            buffer_size=5000,
                            deterministic=False):
@@ -128,7 +128,7 @@ def generate_train_dataset(dataset,
             .prefetch(tf.data.AUTOTUNE)
 
     if repeat:
-        train_dataset = train_dataset.repeat()
+        train_dataset = train_dataset.repeat(10)
 
     return train_dataset
 
@@ -178,7 +178,7 @@ class Dataset():
         global LayerDict
 
         # obtain dataset
-        ds, info = tfds.load(name, data_dir="dataset/path", with_info=True)
+        ds, info = tfds.load(name, data_dir="/content/drive/MyDrive/slovo/", with_info=True)
 
         # generate train dataset
         if concat_validation_to_train:
@@ -243,7 +243,7 @@ class Dataset():
     def get_training_set(self,
                          batch_size=32,
                          buffer_size=5000,
-                         repeat=False,
+                         repeat=True,
                          deterministic=False,
                          augmentation=True,
                          pipeline="default"):

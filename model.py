@@ -23,6 +23,11 @@ def build_densenet121_model(input_shape=[None, 135, 2],
     # setup model
     inputs = Input(shape=input_shape)
     x = backbone(inputs)
+    # Add augmentation layer
+    data_augmentation = tf.keras.Sequential([
+        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal"),
+        tf.keras.layers.experimental.preprocessing.RandomRotation(0.1),
+    ])
     x = Dropout(dropout)(x)
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=inputs, outputs=predictions)
