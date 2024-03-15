@@ -4,10 +4,10 @@ from tensorflow.keras.metrics import TopKCategoricalAccuracy
 from tensorflow.keras.layers import Dropout, Dense
 from tensorflow.keras import Input
 from tensorflow.keras.models import Model
-from tensorflow.keras.applications.densenet import DenseNet121
+from tensorflow.keras.applications.densenet import DenseNet169
 
 
-def build_densenet121_model(input_shape=[None, 135, 2],
+def build_densenet16_model(input_shape=[None, 135, 2],
                             dropout=0,
                             optimizer=None,
                             pretraining=False,
@@ -15,7 +15,7 @@ def build_densenet121_model(input_shape=[None, 135, 2],
                             num_classes=None):
     # setup backbone
     weights = 'imagenet' if pretraining else None
-    backbone = DenseNet121(input_shape=input_shape,
+    backbone = DenseNet169(input_shape=input_shape,
                            weights=weights,
                            include_top=False,
                            pooling="avg")

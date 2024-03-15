@@ -5,7 +5,7 @@ import numpy as np
 import wandb
 from wandb.keras import WandbCallback
 import tensorflow as tf
-from model import build_densenet121_model
+from model import build_densenet169_model
 from optimizer import build_sgd_optimizer
 from utils import str2bool
 
@@ -43,7 +43,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
     optimizer = build_sgd_optimizer()
     
     # placeholder model
-    model = build_densenet121_model(input_shape=input_shape,
+    model = build_densenet169_model(input_shape=input_shape,
                                     dropout=0,
                                     optimizer=optimizer,
                                     pretraining=False,

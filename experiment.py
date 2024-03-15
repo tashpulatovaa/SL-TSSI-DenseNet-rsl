@@ -5,7 +5,7 @@ import numpy as np
 import wandb
 from wandb.keras import WandbCallback, WandbModelCheckpoint
 import tensorflow as tf
-from model import build_densenet121_model#, build_efficientnet_model
+from model import build_densenet169_model#, build_efficientnet_model
 from optimizer import build_sgd_optimizer, build_adam_optimizer, build_sgd_optimizer_wo_schedule
 from utils import str2bool
 
@@ -81,7 +81,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
 
     # setup model
     if config['backbone'] == "densenet":
-        model = build_densenet121_model(input_shape=input_shape,
+        model = build_densenet169_model(input_shape=input_shape,
                                         dropout=config['dropout'],
                                         optimizer=optimizer,
                                         pretraining=config['pretraining'],
