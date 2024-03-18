@@ -33,7 +33,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
     train_dataset = dataset.get_training_set(
         batch_size=config['batch_size'],
         buffer_size=dataset.num_train_examples,
-        repeat=False,
+        repeat=True,
         deterministic=deterministic,
         augmentation=config['augmentation'],
         pipeline=config['pipeline'])

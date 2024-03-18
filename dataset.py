@@ -128,7 +128,7 @@ def generate_train_dataset(dataset,
             .prefetch(tf.data.AUTOTUNE)
 
     if repeat:
-        train_dataset = train_dataset.repeat(10)
+        train_dataset = train_dataset.repeat(3)
 
     return train_dataset
 

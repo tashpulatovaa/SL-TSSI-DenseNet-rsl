@@ -7,7 +7,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications.densenet import DenseNet169
 
 
-def build_densenet16_model(input_shape=[None, 135, 2],
+def build_densenet169_model(input_shape=[None, 135, 2],
                             dropout=0,
                             optimizer=None,
                             pretraining=False,
@@ -22,13 +22,7 @@ def build_densenet16_model(input_shape=[None, 135, 2],
 
     # setup model
     inputs = Input(shape=input_shape)
-    # Add augmentation layer
-    data_augmentation = tf.keras.Sequential([
-        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal"),
-        tf.keras.layers.experimental.preprocessing.RandomRotation(0.1),
-    ])
-    x = data_augmentation(inputs)
-    x = backbone(x)
+    x = backbone(inputs)
     x = Dropout(dropout)(x)
     predictions = Dense(num_classes, activation='softmax')(x)
     model = Model(inputs=inputs, outputs=predictions)
