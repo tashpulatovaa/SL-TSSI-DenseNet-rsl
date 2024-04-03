@@ -15,7 +15,7 @@ class LayerType(IntEnum):
 LayerDict = {
     'random_speed': {
         'type': LayerType.Augmentation,
-        'layer': RandomSpeed(min_frames=30, max_frames=128, seed=5),
+        'layer': RandomSpeed(min_frames=50, max_frames=128, seed=5),
     },
     'random_rotation': {
         'type': LayerType.Augmentation,
@@ -108,7 +108,7 @@ PipelineDict = {
 
 def generate_train_dataset(dataset,
                            train_map_fn,
-                           repeat=True,
+                           repeat=False,
                            batch_size=32,
                            buffer_size=5000,
                            deterministic=False):
@@ -199,8 +199,6 @@ class Dataset():
             one_hot_label = tf.one_hot(item["label"],
                                        info.features['label'].num_classes)
             return item["pose"], one_hot_label
-        
-        
         ds["train"] = ds["train"].map(label_to_one_hot).cache()
         ds["validation"] = ds["validation"].map(label_to_one_hot)
 
@@ -243,7 +241,7 @@ class Dataset():
     def get_training_set(self,
                          batch_size=32,
                          buffer_size=5000,
-                         repeat=True,
+                         repeat=False,
                          deterministic=False,
                          augmentation=True,
                          pipeline="default"):
@@ -258,8 +256,14 @@ class Dataset():
             batch = tf.expand_dims(x, axis=0)
             # batch = RemoveZ()(batch)
             batch = preprocessing_pipeline(batch, training=True)
-            x = tf.ensure_shape(
-                batch[0], [self.input_height, self.input_width, 3])
+                # Check if elements have the expected height
+            height = tf.shape(batch[0])[0]
+            width = tf.shape(batch[0])[1]
+            print(batch[0].shape)
+            if height != self.input_height:
+                tf.print("DEBUG: Element doesn't have the expected height after preprocessing. Height:", height, "Width:", width)
+
+            x = tf.ensure_shape(batch[0], [self.input_height, self.input_width, 3])
             return x, y
 
         train_ds = self.ds["train"]
