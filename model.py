@@ -7,7 +7,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications.densenet import DenseNet169
 
 
-def build_densenet169_model(input_shape=[None, 135, 2],
+def build_densenet169_model(input_shape=[None, 135, 3],
                             dropout=0,
                             optimizer=None,
                             pretraining=False,
