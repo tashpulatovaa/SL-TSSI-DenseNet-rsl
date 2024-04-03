@@ -130,6 +130,9 @@ dmypy.json
 commands.sh
 
 # large files
+datasets/slovo_tssi
 datasets/wlasl100_tssi
-datasets/autsl_tssi
+datasets/old
 wandb/
+
+temp.py
