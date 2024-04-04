@@ -33,7 +33,7 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
     train_dataset = dataset.get_training_set(
         batch_size=config['batch_size'],
         buffer_size=dataset.num_train_examples,
-        repeat=False,
+        repeat=True,
         deterministic=deterministic,
         augmentation=config['augmentation'],
         pipeline=config['pipeline'])
@@ -57,10 +57,10 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
 
     # setup optimizer
     optimizer = build_sgd_optimizer(initial_learning_rate=config['initial_learning_rate'],
-                                    maximal_learning_rate=config['maximal_learning_rate'],
+                                    #maximal_learning_rate=config['maximal_learning_rate'],
                                     momentum=config['momentum'],
                                     nesterov=config['nesterov'],
-                                    step_size=config['step_size'],
+                                    batch_steps=config['step_size'],
                                     weight_decay=config['weight_decay'])
     
     # setup model

@@ -241,7 +241,7 @@ class Dataset():
     def get_training_set(self,
                          batch_size=32,
                          buffer_size=5000,
-                         repeat=False,
+                         repeat=True,
                          deterministic=False,
                          augmentation=True,
                          pipeline="default"):
