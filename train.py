@@ -46,10 +46,17 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
     else:
         validation_dataset = None
 
+    # generate testing dataset
+    testing_dataset = dataset.get_testing_set(
+        batch_size=config['batch_size'],
+        pipeline=config['pipeline'])
+
+
     # describe dataset distribution
     print("[INFO] Dataset Total examples:", dataset.num_total_examples)
     print("[INFO] Dataset Training examples:", dataset.num_train_examples)
     print("[INFO] Dataset Validation examples:", dataset.num_val_examples)
+    print("[INFO] Dataset Testing examples:", dataset.num_test_examples)
 
     # describe input shape
     input_shape = [dataset.input_height, dataset.input_width, 3]
@@ -99,8 +106,14 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
               validation_data=validation_dataset,
               callbacks=callbacks)
 
+    # TEST
+    scores = model.evaluate(testing_dataset, return_dict=True)
+    # get the logs of the evaluation
+    print(f'Result: {scores}')
+
     # get the logs of the model
     return model.history
+  
 
 
 def agent_fn(config, project, entity, verbose=0):
