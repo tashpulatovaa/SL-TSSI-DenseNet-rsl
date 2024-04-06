@@ -64,10 +64,10 @@ def run_experiment(config=None, log_to_wandb=True, verbose=0):
 
     # setup optimizer
     optimizer = build_sgd_optimizer(initial_learning_rate=config['initial_learning_rate'],
-                                    #maximal_learning_rate=config['maximal_learning_rate'],
+                                    maximal_learning_rate=config['maximal_learning_rate'],
                                     momentum=config['momentum'],
                                     nesterov=config['nesterov'],
-                                    batch_steps=config['step_size'],
+                                    step_size=config['step_size'],
                                     weight_decay=config['weight_decay'])
     
     # setup model
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     parser.add_argument('--lr_min', type=float,
                         help='Minimum learning rate', default=0.001)
     parser.add_argument('--lr_max', type=float,
-                        help='Maximum learning rate', default=0.01)
+                        help='Maximum learning rate', default=0.02)
     parser.add_argument('--weight_decay', type=float,
                         help='Weight decay', default=0)
     
